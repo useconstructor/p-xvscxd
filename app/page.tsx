@@ -15,6 +15,7 @@ import {
   Clock,
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
   Star,
   Users,
   CheckCircle,
@@ -69,6 +70,30 @@ export default function Home() {
   const [carouselIndex, setCarouselIndex] = useState(0)
   const [formState, setFormState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [formData, setFormData] = useState({ nombre: '', email: '', telefono: '', mensaje: '' })
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  const faqs = [
+    {
+      question: '¿Realizan envíos a domicilio?',
+      answer: 'Sí, realizamos envíos a domicilio en Bogotá el mismo día y en otras ciudades principales en 24-48 horas. Para pedidos grandes de obra, coordinamos entregas programadas directamente en tu proyecto.'
+    },
+    {
+      question: '¿Qué formas de pago aceptan?',
+      answer: 'Aceptamos múltiples formas de pago: Nequi, Daviplata, efectivo, tarjeta de crédito y débito. Para constructores y empresas, también ofrecemos crédito directo y facturación electrónica.'
+    },
+    {
+      question: '¿Cómo puedo solicitar una cotización para obra?',
+      answer: 'Puedes solicitar cotizaciones para obra por WhatsApp enviándonos la lista de materiales, o visitando nuestra tienda. Nuestro equipo te asesorará y te entregará la cotización en máximo 24 horas con precios especiales para proyectos grandes.'
+    },
+    {
+      question: '¿Cuál es la garantía de los productos?',
+      answer: 'Todos nuestros productos tienen garantía de fábrica. Las herramientas eléctricas tienen garantía de 1 a 3 años según la marca. Materiales de construcción cuentan con garantía de calidad y cambio por defectos de fábrica.'
+    },
+    {
+      question: '¿Hacen devoluciones o cambios?',
+      answer: 'Sí, aceptamos devoluciones y cambios dentro de los 8 días siguientes a la compra, presentando la factura. El producto debe estar en su empaque original y sin uso. Herramientas eléctricas se cambian únicamente por defectos de fábrica.'
+    }
+  ]
 
   useEffect(() => {
     async function loadProducts() {
@@ -656,6 +681,34 @@ export default function Home() {
                 </form>
               )}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 bg-[#F5F5F5]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1A1A] mb-4">Preguntas Frecuentes</h2>
+            <p className="text-gray-600">Resolvemos tus dudas más comunes</p>
+          </div>
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div key={index} className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <span className="font-bold text-[#1A1A1A] pr-4">{faq.question}</span>
+                  <ChevronDown className={`w-5 h-5 text-[#FFD700] flex-shrink-0 transition-transform duration-300 ${openFaq === index ? 'rotate-180' : ''}`} />
+                </button>
+                <div className={`transition-all duration-300 ease-in-out ${openFaq === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+                  <div className="px-6 pb-6 text-gray-600">
+                    {faq.answer}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
